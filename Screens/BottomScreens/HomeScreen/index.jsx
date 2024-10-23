@@ -21,7 +21,9 @@ import LottieView from 'lottie-react-native';
 import LottieAlertSucess from "../../../Assets/Alerts/Success";
 import LottieAlertError from "../../../Assets/Alerts/Error";
 import LottieCatchError from "../../../Assets/Alerts/Catch";
-import { check, request, PERMISSIONS } from 'react-native-permissions';
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const HomeScreen = ({ navigation }) => {
 
@@ -274,17 +276,27 @@ const HomeScreen = ({ navigation }) => {
     };
 
     const checkAndRequestCameraPermission = async () => {
-        const status = await check(PERMISSIONS.ANDROID.CAMERA);
-
-        if (status !== 'granted') {
-            const result = await request(PERMISSIONS.ANDROID.CAMERA);
-            if (result !== 'granted') {
-                console.log('Camera permission is not granted');
-                return;
-            }
+        let permission;
+    
+        if (Platform.OS === 'android') {
+            permission = PERMISSIONS.ANDROID.CAMERA;
+        } else if (Platform.OS === 'ios') {
+            permission = PERMISSIONS.IOS.CAMERA;
         }
-
-        handleFromCamera();
+    
+        if (permission) {
+            const status = await check(permission);
+    
+            if (status !== RESULTS.GRANTED) {
+                const result = await request(permission);
+                if (result !== RESULTS.GRANTED) {
+                    console.log('Camera permission is not granted');
+                    return;
+                }
+            }
+    
+            handleFromCamera();
+        }
     };
 
     const handleImagePickerResult = async (result) => {
@@ -349,6 +361,8 @@ const HomeScreen = ({ navigation }) => {
 
     const [allowedipAddress, setAllowedipAddress] = useState([]);
     const [useripaddress, setUseripaddress] = useState('');
+    console.log(useripaddress,"useripaddress")
+    console.log(allowedipAddress,"allowedipAddress")
 
     // Check if the useripaddress is included in the allowedipAddress array
     const isUserIpAllowed = allowedipAddress.some(item => item.ip_address === useripaddress);
@@ -553,8 +567,12 @@ const HomeScreen = ({ navigation }) => {
                 setLoggedInTime(updatedata.userempcheckintime);
                 setLoggedOutTime(updatedata.userempcheckouttime);
                 setTotalHours(updatedata.userempchecktotaltime);
-                if (flag===true) {
-                setUserAlreadyLoggedIn(updatedata.statuscurrentdate);
+                await AsyncStorage.setItem('loggedInTime', updatedata.userempcheckintime);
+                await AsyncStorage.setItem('loggedOutTime', updatedata.userempcheckouttime);
+                await AsyncStorage.setItem('totalHours', updatedata.userempchecktotaltime);
+                if (flag === true) {
+                    setUserAlreadyLoggedIn(updatedata.statuscurrentdate);
+                    await AsyncStorage.setItem('userAlreadyLoggedIn', updatedata.statuscurrentdate.toString());
                 }
             }
 
@@ -563,9 +581,36 @@ const HomeScreen = ({ navigation }) => {
         }
     };
 
-
     useEffect(() => {
-        // getInOutWorkingTime(false);
+        const fetchStoredData = async () => {
+            try {
+                const storedLoggedInTime = await AsyncStorage.getItem('loggedInTime');
+                const storedLoggedOutTime = await AsyncStorage.getItem('loggedOutTime');
+                const storedTotalHours = await AsyncStorage.getItem('totalHours');
+                const storedUserAlreadyLoggedIn = await AsyncStorage.getItem('userAlreadyLoggedIn');
+
+                if (storedLoggedInTime !== null) {
+                    setLoggedInTime(storedLoggedInTime);
+                }
+                if (storedLoggedOutTime !== null) {
+                    setLoggedOutTime(storedLoggedOutTime);
+                }
+                if (storedTotalHours !== null) {
+                    setTotalHours(storedTotalHours);
+                }
+                if (storedUserAlreadyLoggedIn !== null) {
+                    setUserAlreadyLoggedIn(storedUserAlreadyLoggedIn);
+                }
+            } catch (error) {
+                console.error('Error fetching stored data:', error);
+            }
+        };
+
+        fetchStoredData();
+    }, []);
+    
+    useEffect(() => {
+        getInOutWorkingTime(false);
     }, [])
 
     // 
