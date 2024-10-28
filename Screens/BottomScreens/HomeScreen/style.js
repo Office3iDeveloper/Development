@@ -1,9 +1,6 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-
-
-
     profileImage: {
         width: 50,
         height: 50,
@@ -63,30 +60,36 @@ const styles = StyleSheet.create({
     clockcontainer: {
         width: '100%',
         flexDirection: 'row',
-        marginTop: 20
+        alignItems:'center',
+        justifyContent:'space-between',
+        marginVertical:5,
+        // marginTop: 20,
+        // borderWidth:1
     },
 
     clockCenter: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        width: '33.3%',
-        padding: 2,
+        marginVertical:3,
+        // width: '33.3%',
+        // borderWidth:1,
+        // padding: 2,
     },
 
     timetext: {
         fontWeight: '400',
         color: "#000",
         fontSize: 14,
-        paddingTop: "5%",
+        // paddingTop: "5%",
         lineHeight: 18.62,
-        paddingBottom: "5%",
+        // paddingBottom: "5%",
     },
 
     timenumbertext: {
         fontWeight: '500',
         color: "#000",
-        fontSize: 16
+        fontSize: 14
     },
 
     CountContainer: {
@@ -199,6 +202,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F4FDFF',
         width: 94,
         height: 31,
+        marginLeft:5,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 4,
@@ -538,7 +542,339 @@ const styles = StyleSheet.create({
 
     Activeindicator: {
         height: 100,
-    }
+    },
+    progressbarview: {
+        padding: 10,
+        alignSelf: 'center',
+        width: '90%',
+        backgroundColor: '#fff',
+        marginVertical: 10,
+        borderRadius: 10,
+      },
+      datetext: {
+        fontSize: 24,
+        fontWeight: '700',
+        color: '#0A62F1',
+        marginVertical: 5,
+      },
+      shifttext: {
+        fontSize: 14,
+        fontWeight: '400',
+        color: '#3A3A3A',
+        // textAlign: 'center',
+        marginVertical: 5,
+      },
+      checkin: {
+        width: '45%',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#C5D5F0',
+        alignSelf: 'center',
+        padding: 7,
+        borderRadius: 5,
+      },
+      checkintext: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#7089B2',
+        textAlign: 'center',
+      },
+      buttonview: {
+        flexDirection: 'row',
+        width: '100%',
+        marginVertical: 10,
+        alignSelf: 'center',
+        justifyContent: 'space-between',
+      },
+      boardview: {
+        // borderWidth:0.5,
+        width: '100%',
+        // flexDirection:'row',
+        justifyContent: 'space-between',
+        padding: 5,
+      },
+      boardtextview: {
+        borderBottomWidth: 0.3,
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        padding: 5,
+      },
+      boardtext: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#00275C',
+        textAlign: 'center',
+      },
+      emojiHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 10,
+        marginVertical: 10,
+        // borderWidth:1
+      },
+      card1: {
+        backgroundColor: '#CBDEF4',
+        padding: 20,
+        borderRadius: 10,
+        width: '90%',
+        alignSelf: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 3,
+        marginVertical:10
+      },
+      header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 10,
+      },
+      headerText1: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color:'#00275C'
+      },
+      content: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding:10
+      },
+      holidayDetails: {
+        alignItems: 'center',
+      },
+      holidayName: {
+        color: '#0A62F1', 
+        fontSize: 20,
+        fontWeight: 'bold',
+      },
+      holidayDate: {
+        color: '#757575', 
+        fontSize: 14,
+      },
+      whatsmind: {
+        width: '90%',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        marginVertical: 10,
+      },
+      whatsmindview: {
+        borderWidth: 0.5,
+        borderRadius: 10,
+        width: '85%',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        padding: 10,
+      },
+      plusview: {
+        height: 25,
+        width: 25,
+        backgroundColor: '#0A62F1',
+        borderRadius: 5,
+        marginRight: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      dotview: {
+        // height: 50,
+        width: '15%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        // flexDirection: 'row',
+        // borderWidth:1
+      },
+      dotview2: {
+        // borderWidth:1,
+        // height: 40,
+        width: '70%',
+        backgroundColor: '#0A62F1',
+        borderRadius: 5,
+        flexDirection:'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      postview: {
+        width: '90%',
+        alignSelf: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        marginVertical: 10,
+        // borderWidth:1,
+      },
+      allbutton: {
+        width: '15%',
+        borderWidth: 1,
+        borderColor: '#0A62F1',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 5,
+        padding: 3,
+      },
+      alltext: {
+        fontSize: 16,
+        fontWeight: '400',
+        color: '#0A62F1',
+      },
+      header1: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '90%',
+        alignSelf: 'center',
+      },
+      profileImage: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+      },
+      headerText: {
+        marginLeft: 10,
+      },
+      headerRow: {
+        width: '92%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      },
+      name: {
+        fontWeight: 'bold',
+        fontSize: 16,
+      },
+      role: {
+        color: 'gray',
+        fontSize: 12,
+      },
+      time: {
+        color: 'gray',
+        fontSize: 12,
+      },
+      postText: {
+        fontSize: 14,
+        marginBottom: 10,
+      },
+      postImage: {
+        width: '100%',
+        height: 350,
+        padding: 10,
+        borderRadius: 8,
+        marginBottom: 10,
+      },
+      likesContainer: {
+        width: '90%',
+        alignSelf: 'center',
+        marginBottom: 10,
+      },
+      likeText: {
+        fontSize: 14,
+        color: 'gray',
+      },
+      reactionsContainer: {
+        width: '95%',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        borderTopWidth: 1,
+        borderTopColor: '#eee',
+        paddingTop: 10,
+        marginBottom: 10,
+      },
+      reaction: {
+        fontSize: 14,
+        color: '#3b5998',
+      },
+      activeReaction: {
+        fontWeight: 'bold',
+        color: '#1DA1F2',
+      },
+      iconview: {
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      modalView: {
+        height:'30%',
+        width: '100%',
+        padding: 25,
+        justifyContent:'space-evenly',
+        backgroundColor: 'white',
+        borderTopLeftRadius:20,
+        borderTopRightRadius:20
+      },
+      modalContainer1: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      },
+      modalText1: {
+        marginBottom: 5,
+        fontSize: 18,
+        fontWeight: '600',
+        color:'#3A3A3A'
+      },
+      item: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 10,
+        marginVertical: 8,
+        marginHorizontal: 16,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+        elevation: 5,
+      },
+      image: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+      },
+      info: {
+        flex: 1,
+        marginLeft: 10,
+      },
+      name: {
+        fontSize: 16,
+        fontWeight: 'bold',
+      },
+      role: {
+        fontSize: 14,
+        color: 'gray',
+      },
+      date: {
+        fontSize: 14,
+        color: '#0A62F1',
+        fontWeight:'500'
+      },
+      birthtext:{
+        fontSize:24,
+        fontWeight:'700',
+        color:'#fff',
+        marginLeft:15
+      },
+      
+      monthtext:{
+        fontSize:16,
+        fontWeight:'500',
+        color:'#6B6B6B',
+        marginLeft:15,
+        marginVertical:10
+      },
+      headerviews:{
+        width:'100%',
+        justifyContent:'space-between',
+        flexDirection:'row',
+        backgroundColor:'#20DDFE',
+        padding:10
+      },
+      inprogress:{
+        backgroundColor:'#D9F4FF',
+        padding:4,
+        borderRadius:5,
+      }
 });
 
 export default styles;

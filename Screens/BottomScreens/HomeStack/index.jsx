@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import {Image} from 'react-native';
 import { Text, TouchableOpacity, View } from "react-native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Svg, { Path } from 'react-native-svg';
@@ -195,6 +196,10 @@ import HeaderandFooter from "./Template/HeaderandFooter";
 import EditHeadFoot from "./Template/EditHeadFoot";
 import ViewHeaderFooter from "./Template/ViewHeadFoot";
 import EditDailyAttendance from "./Attendance/EditDailyAttendance";
+import Birthday from "../HomeScreen/Birthday";
+import SkillDevelopment from "../HomeScreen/Skill Development";
+import PostScreen from "../HomeScreen/Posts";
+import { useSelector } from "react-redux";
 
 
 const Stack = createNativeStackNavigator();
@@ -215,7 +220,8 @@ const MenuIcon = () => {
 };
 
 const HomeStack = () => {
-
+  const { data } = useSelector((state) => state.login);
+  const imageUrl = `https://office3i.com/development/api/storage/app/${data.userimage}`;
   return (
     <Stack.Navigator
       screenOptions={({ navigation }) => ({
@@ -225,12 +231,36 @@ const HomeStack = () => {
         headerTitleStyle: { fontWeight: 'bold', color: '#fff', },
         headerTitleAlign: 'center',
         headerLeft: () => (
+          <View   style={{
+            width: '98%',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
           <TouchableOpacity
-            onPress={() => navigation.toggleDrawer()}
-            style={{ paddingLeft: 10 }}
-          >
-            <MenuIcon />
+          onPress={() => navigation.toggleDrawer()}
+          style={{
+            // width: '98%',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <MenuIcon />
           </TouchableOpacity>
+          <View style={{flexDirection:'row'}}>
+          <Text
+            style={{
+              fontSize: 15,
+              fontWeight: '500',
+              color: '#fff',
+              marginRight: 10,
+            }}>
+            Good Morning,{'\n'}{data.username}
+          </Text>
+          <Image
+            source={{uri: imageUrl}}
+            style={{width: 40, height: 40, borderRadius: 25,marginRight: 15,}}
+          />
+          </View>
+          </View>
         ),
       })}
     >
@@ -508,6 +538,9 @@ const HomeStack = () => {
       {/*  */}
 
       <Stack.Screen name="Upgrade Plan" component={UpgradePlan} />
+      <Stack.Screen name="Birthday" component={Birthday} options={{headerShown:false}} />
+      <Stack.Screen name="SkillDevelopment" component={SkillDevelopment} options={{headerShown:false}} />
+      <Stack.Screen name="PostScreen" component={PostScreen} options={{headerShown:false}} />
 
     </Stack.Navigator>
 
