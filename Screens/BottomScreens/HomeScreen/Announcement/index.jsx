@@ -454,11 +454,8 @@ const Announcement = () => {
                                                 >
                                                     <EditIcon width={14} height={14} color={"#000"} />
                                                 </TouchableOpacity>
-                                                <TouchableOpacity style={styles.listcontentdelbutton}
-                                                    onPress={() => HandleDelete(item.id)}
-                                                >
-                                                    <DeleteIcon width={14} height={14} color={"#000"} />
-                                                </TouchableOpacity>
+                                                import ViewIcon from "../../../../../Assets/Icons/eyeopen.svg";
+
                                             </View>
                                         </View>
                                     ))

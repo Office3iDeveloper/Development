@@ -1518,7 +1518,7 @@ const AttendancePolicy = ({ navigation }) => {
                                 </View>
 
                                 {datalist.length === 0 ? (
-                                    <Text style={{ textAlign: 'center', paddingVertical: 10 }}>No data available</Text>
+                                    <Text style={{ textAlign: 'center', paddingVertical: 10 ,color:'#000'}}>No data available</Text>
                                 ) : (
                                     datalist.map((item, index) => (
                                         <View key={index} style={[styles.row, styles.listBody]}>

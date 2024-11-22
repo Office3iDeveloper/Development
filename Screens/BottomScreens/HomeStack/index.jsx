@@ -200,6 +200,15 @@ import Birthday from "../HomeScreen/Birthday";
 import SkillDevelopment from "../HomeScreen/Skill Development";
 import PostScreen from "../HomeScreen/Posts";
 import { useSelector } from "react-redux";
+import AddSkilldevelopment from "../HomeScreen/Skill Development/Add Skill Development";
+import EditSkilldevelopment from "../HomeScreen/Skill Development/Edit Skill Development";
+import RewardRecongition from "../HomeScreen/Reward/Rewards & Recognition";
+import AddNewReward from "../HomeScreen/Reward/Add New Reward";
+import AddNewTile from "../HomeScreen/Reward/Add New Title";
+import RewardPerson from "../HomeScreen/Reward/Rewardperson";
+import EditrewardTile from "../HomeScreen/Reward/Add New Title/Edittitle";
+import Viewimg from "../HomeScreen/Reward/Add New Title/Viewimage";
+import Attachmentview from "../HomeScreen/Skill Development/Add Skill Development/Attachmentview";
 
 
 const Stack = createNativeStackNavigator();
@@ -541,7 +550,15 @@ const HomeStack = () => {
       <Stack.Screen name="Birthday" component={Birthday} options={{headerShown:false}} />
       <Stack.Screen name="SkillDevelopment" component={SkillDevelopment} options={{headerShown:false}} />
       <Stack.Screen name="PostScreen" component={PostScreen} options={{headerShown:false}} />
-
+      <Stack.Screen name="AddSkilldevelopment" component={AddSkilldevelopment} options={{headerShown:false}} />
+      <Stack.Screen name="EditSkilldevelopment" component={EditSkilldevelopment} options={{headerShown:false}} />
+      <Stack.Screen name="RewardRecongition" component={RewardRecongition} options={{headerShown:false}} />
+      <Stack.Screen name="AddNewReward" component={AddNewReward} options={{headerShown:false}} />
+      <Stack.Screen name="AddNewTile" component={AddNewTile} options={{headerShown:false}} />
+      <Stack.Screen name="RewardPerson" component={RewardPerson} options={{headerShown:false}} />
+      <Stack.Screen name="EditrewardTile" component={EditrewardTile} options={{headerShown:false}} />
+      <Stack.Screen name="Viewimg" component={Viewimg} options={{headerShown:false}} />
+      <Stack.Screen name="Attachmentview" component={Attachmentview} options={{headerShown:false}} />
     </Stack.Navigator>
 
   );

@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   FlatList,
   PermissionsAndroid,
+  SafeAreaView,
+  StatusBar
 } from 'react-native';
 import styles from '../style';
 import LinearGradient from 'react-native-linear-gradient';
@@ -93,7 +95,7 @@ const SkillDevelopment = () => {
 
   const downloadPDF = async () => {
     const pdfUrl =
-      'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+      bdayList.skill_dev_training.attachment;
     const {config, fs} = RNFetchBlob;
     let dir = fs.dirs.DownloadDir;
 
@@ -147,7 +149,8 @@ const SkillDevelopment = () => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
+       <StatusBar StatusBarStyle={'light-content'} backgroundColor={'#20DDFE'}/>
       <LinearGradient
         colors={['#20DDFE', '#0468F5']}
         style={[
@@ -162,7 +165,7 @@ const SkillDevelopment = () => {
         </TouchableOpacity>
         <Text style={styles.birthtext}>Skill Development / Training</Text>
       </LinearGradient>
-      <View
+      <TouchableOpacity  onPress={() => navigation.navigate('AddSkilldevelopment')}
         style={{
           // borderWidth: 1,
           backgroundColor: '#D4E4FF',
@@ -171,7 +174,8 @@ const SkillDevelopment = () => {
           padding: 10,
           marginLeft:20,
           marginVertical:10,
-          borderRadius:10
+          borderRadius:10,
+          justifyContent:'space-between'
         }}>
         <View
           style={{
@@ -191,8 +195,8 @@ const SkillDevelopment = () => {
             +
           </Text>
         </View>
-        <Text>Add New Skill</Text>
-      </View>
+        <Text style={{color:'#0A62F1',fontSize:16,fontWeight:'500'}}>Add New Skill</Text>
+      </TouchableOpacity>
       <FlatList
         data={bdayList?.skill_dev_training}
         renderItem={renderItem}
@@ -209,7 +213,7 @@ const SkillDevelopment = () => {
           Exciting skill-building programs{'\n'}are on the way
         </Text>
       </View> */}
-    </View>
+    </SafeAreaView>
   );
 };
 

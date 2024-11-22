@@ -69,6 +69,7 @@
 		00E356EF1AD99517003FC87E /* Office3iDevelopmentTests */ = {
 			isa = PBXGroup;
 			children = (
+				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356F21AD99517003FC87E /* Office3iDevelopmentTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
@@ -111,13 +112,13 @@
 			children = (
 			);
 			name = Libraries;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
 				13B07FAE1A68108700A75B9A /* Office3iDevelopment */,
-				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* Office3iDevelopmentTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,

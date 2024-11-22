@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -19,7 +19,7 @@ import NetInfo from '@react-native-community/netinfo';
 import DeviceInfo from 'react-native-device-info';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment-timezone';
-import Svg, {Path} from 'react-native-svg';
+import Svg, { Path } from 'react-native-svg';
 // import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 import ImagePicker from 'react-native-image-crop-picker';
 import HandCursorIcon from '../../../Assets/Icons/HandCursor.svg';
@@ -28,24 +28,24 @@ import DepressedIcon from '../../../Assets/Emo/depressed.svg';
 import HeartFeelIcon from '../../../Assets/Emo/HeartFeel.svg';
 import SadIcon from '../../../Assets/Emo/sad.svg';
 import SmileIcon from '../../../Assets/Emo/smile.svg';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
 import LottieAlertSucess from '../../../Assets/Alerts/Success';
 import LottieAlertError from '../../../Assets/Alerts/Error';
 import LottieCatchError from '../../../Assets/Alerts/Catch';
-import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Progress from 'react-native-progress';
 import Birthday from './Birthday';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import {Overlay} from 'react-native-share';
+import { Overlay } from 'react-native-share';
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation }) => {
   // data from redux store
 
-  const {data} = useSelector(state => state.login);
+  const { data } = useSelector(state => state.login);
 
   // clock icon
 
@@ -107,7 +107,12 @@ const HomeScreen = ({navigation}) => {
         },
       });
 
-      const mappedFestivals = response.data.holiday_list.current_holiday.map(
+      const combinedholidays = [
+        ...response.data.holiday_list.current_holiday,
+        ...response.data.holiday_list.futured_holiday
+      ]
+
+      const mappedFestivals = combinedholidays.map(
         festival => {
           const dateParts = festival.h_date.split(' ');
           let parsedDate = null;
@@ -132,10 +137,39 @@ const HomeScreen = ({navigation}) => {
       console.error('Error fetching Count data:', error);
     }
   };
+  const [bdayList, setbdayList] = useState('');
+  const [selectededGender, setSelectedGender] = useState('all');
+
+  const selectGender = (value) => {
+    // setShowGender(false);
+    setSelectedGender(value);
+  };
+  const Annlist2 = async () => {
+    try {
+
+      const response = await axios.post('https://office3i.com/development/api/public/api/getUserFeed', {
+        type: selectededGender.toLocaleLowerCase(), // Query parameters
+        user_emp_id: data.userempid,
+      }, {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      });
+
+      const responseData = response.data.data;
+      setbdayList(responseData);
+      // console.log('bday12345==>', bdayList)
+    } catch (error) {
+      console.error('Error fetching Announcement data:', error);
+    }
+  };
 
   useEffect(() => {
     CountApi();
   }, [data]);
+  useEffect(() => {
+    Annlist2();
+  }, []);
 
   // mood Board -------------
 
@@ -206,8 +240,8 @@ const HomeScreen = ({navigation}) => {
     selectedOption === 'All'
       ? transformedMoodboard
       : transformedMoodboard.filter(item => {
-          return item.iconType.toLowerCase() === selectedOption.toLowerCase();
-        });
+        return item.iconType.toLowerCase() === selectedOption.toLowerCase();
+      });
 
   // Get MoodBoardlist
 
@@ -404,8 +438,8 @@ const HomeScreen = ({navigation}) => {
 
   const [allowedipAddress, setAllowedipAddress] = useState([]);
   const [useripaddress, setUseripaddress] = useState('');
-  console.log(useripaddress, 'useripaddress');
-  console.log(allowedipAddress, 'allowedipAddress');
+  // console.log(useripaddress, 'useripaddress');
+  // console.log(allowedipAddress, 'allowedipAddress');
 
   // Check if the useripaddress is included in the allowedipAddress array
   const isUserIpAllowed = allowedipAddress.some(
@@ -730,9 +764,8 @@ const HomeScreen = ({navigation}) => {
     setShowDatePicker(true);
   };
 
-  const formattedStartDate = `${startDate.getFullYear()}-${
-    startDate.getMonth() + 1
-  }-${startDate.getDate()}`;
+  const formattedStartDate = `${startDate.getFullYear()}-${startDate.getMonth() + 1
+    }-${startDate.getDate()}`;
 
   const HandleDelete = () => {
     setModalVisible(true);
@@ -843,7 +876,7 @@ const HomeScreen = ({navigation}) => {
     return <Text>Loading holidays...</Text>;
   }
 
-  const {name, date} = festivals[currentFestivalIndex];
+  const { name, date } = festivals[currentFestivalIndex];
 
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
@@ -856,96 +889,205 @@ const HomeScreen = ({navigation}) => {
     console.log('Selected date:', formattedDate); // Log the selected date
   };
 
-  const posts = [
-    {
-      id: '1',
-      name: 'Jarvis',
-      time: '2hrs ago',
-      role: 'HR Recruiter',
-      postText:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text.",
-      profileImage: require('../../../Assets/Image/officemember.png'),
-      postImage: require('../../../Assets/Image/officemember.png'),
-      likeCount: 12,
-    },
-    {
-      id: '1',
-      name: 'Jarvis',
-      time: '2hrs ago',
-      role: 'HR Recruiter',
-      postText:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text.",
-      profileImage: require('../../../Assets/Image/officemember.png'),
-      postImage: require('../../../Assets/Image/officemember.png'),
-      likeCount: 12,
-    },
-  ];
+  // const posts = [
+  //   {
+  //     id: '1',
+  //     name: 'Jarvis',
+  //     time: '2hrs ago',
+  //     role: 'HR Recruiter',
+  //     postText:
+  //       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text.",
+  //     profileImage: require('../../../Assets/Image/officemember.png'),
+  //     postImage: require('../../../Assets/Image/officemember.png'),
+  //     likeCount: 12,
+  //   },
+  //   {
+  //     id: '1',
+  //     name: 'Jarvis',
+  //     time: '2hrs ago',
+  //     role: 'HR Recruiter',
+  //     postText:
+  //       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text.",
+  //     profileImage: require('../../../Assets/Image/officemember.png'),
+  //     postImage: require('../../../Assets/Image/officemember.png'),
+  //     likeCount: 12,
+  //   },
+  // ];
 
-  const PostItem = ({item, handleReaction, reactions}) => (
-    <View>
-      {/* Header */}
-      <View style={styles.header1}>
-        <Image source={item.profileImage} style={styles.profileImage} />
-        <View style={styles.headerText}>
-          <View style={styles.headerRow}>
-            <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.time}>{item.time}</Text>
+
+
+  const PostItem = ({ item }) => {
+    // const [press,setpress] = useState(false)
+    // const handlePress = () => {
+    //   setpress(!press); 
+    // };
+    return (
+      <View>
+        {/* Header */}
+        {item.post_type === 'post' || item.post_type === 'announcement' ? <View>
+          <View style={styles.header1}>
+            <Image source={{ uri: `https://office3i.com/development/api/storage/app/${item.created_by.profile_img}`, }} style={styles.profileImage} />
+            <View style={styles.headerText}>
+              <View style={styles.headerRow2}>
+                <Text style={styles.name}>{item.created_by.first_name}</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={styles.time}>{item.created_at}</Text>
+                  <TouchableOpacity onPress={null}>
+                    <Image
+                      source={require('../../../Assets/Image/threedots.png')}
+                      style={{ height: 20, width: 20 }}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              {/* {press &&  (<View style={{backgroundColor:'#fff',padding:10}}>
+          <Text style={styles.name}>Edit</Text>
+          <Text style={styles.name}>Delete</Text>
+          </View>)} */}
+              <Text style={styles.role}>{item.created_by.department_name}</Text>
+            </View>
           </View>
-          <Text style={styles.role}>{item.role}</Text>
-        </View>
-      </View>
 
-      {/* Post Text and Image */}
-      <View style={{width: '90%', alignSelf: 'center', marginVertical: 10}}>
-        <Text style={styles.postText}>{item.postText}</Text>
-        <Image source={item.postImage} style={styles.postImage} />
-      </View>
+          {/* Post Text and Image */}
+          <View style={{ width: '90%', alignSelf: 'center', marginVertical: 10 }}>
+            <Text style={styles.postText}>{item.description_or_title}</Text>
+            <Image source={{ uri: `https://office3i.com/development/api/storage/app/${item.image}` }} style={styles.postImage} />
+          </View>
 
-      {/* Likes */}
-      <View style={styles.likesContainer}>
-        <Text style={styles.likeText}>👍 You and {item.likeCount} others</Text>
-      </View>
+          {/* Likes */}
+          <View style={[styles.likesContainer, { flexDirection: 'row' }]}>
+            <Image
+              source={require('../../../Assets/Image/thumbsupclr.png')}
+              style={{ height: 18, width: 18, zIndex: 1 }}
+            />
+            <Image
+              source={require('../../../Assets/Image/heartclr.png')}
+              style={{ height: 18, width: 18, right: 7 }}
+            />
+            {/* <Image
+          source={require('../../../Assets/Image/confetticolor.png')}
+          style={{ height: 18, width: 18 }}
+        />
+        <Image
+          source={require('../../../Assets/Image/ideacolor.png')}
+          style={{ height: 18, width: 18 }}
+        />
+        <Image
+          source={require('../../../Assets/Image/laughcolor.png')}
+          style={{ height: 18, width: 18 }}
+        /> */}
+            <Text style={styles.likeText}>You and {item.total_likes} others</Text>
+          </View>
 
-      {/* Reactions */}
-      <View style={styles.reactionsContainer}>
-        <TouchableOpacity style={styles.iconview}>
-          <Image
-            source={require('../../../Assets/Image/thumbs-up.png')}
-            style={{height: 20, width: 20}}
-          />
-          <Text>Like</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.iconview}>
-          <Image
-            source={require('../../../Assets/Image/heart.png')}
-            style={{height: 20, width: 20}}
-          />
-          <Text>Love</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.iconview}>
-          <Image
-            source={require('../../../Assets/Image/confetti.png')}
-            style={{height: 20, width: 20}}
-          />
-          <Text>Celebrate</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.iconview}>
-          <Image
-            source={require('../../../Assets/Image/idea.png')}
-            style={{height: 20, width: 20}}
-          />
-          <Text>Thoughtful</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.iconview}>
-          <Image
-            source={require('../../../Assets/Image/laugh.png')}
-            style={{height: 20, width: 20}}
-          />
-          <Text>Funny</Text>
-        </TouchableOpacity>
+          {/* Reactions */}
+          <View style={styles.reactionsContainer}>
+            <TouchableOpacity style={styles.iconview}>
+              {item.current_user_liked === 'Like' ? <Image
+                source={require('../../../Assets/Image/thumbsupclr.png')}
+                style={{ height: 20, width: 20 }}
+              /> :
+                <Image
+                  source={require('../../../Assets/Image/thumbs-up.png')}
+                  style={{ height: 20, width: 20 }}
+                />}
+              <Text>Like</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconview}>
+              {item.current_user_liked === 'Love' ? <Image
+                source={require('../../../Assets/Image/heartclr.png')}
+                style={{ height: 20, width: 20 }}
+              /> :
+                <Image
+                  source={require('../../../Assets/Image/heart.png')}
+                  style={{ height: 20, width: 20 }}
+                />}
+              <Text>Love</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconview}>
+              {item.current_user_liked === 'Celebrate' ? <Image
+                source={require('../../../Assets/Image/confetticolor.png')}
+                style={{ height: 20, width: 20 }}
+              /> :
+                <Image
+                  source={require('../../../Assets/Image/confetti.png')}
+                  style={{ height: 20, width: 20 }}
+                />}
+              <Text>Celebrate</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconview}>
+              {item.current_user_liked === 'Thoughtful' ? <Image
+                source={require('../../../Assets/Image/ideacolor.png')}
+                style={{ height: 20, width: 20 }}
+              /> :
+                <Image
+                  source={require('../../../Assets/Image/idea.png')}
+                  style={{ height: 20, width: 20 }}
+                />}
+              <Text>Thoughtful</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconview}>
+              {item.current_user_liked === 'Funny' ? <Image
+                source={require('../../../Assets/Image/laughcolor.png')}
+                style={{ height: 20, width: 20 }}
+              /> :
+                <Image
+                  source={require('../../../Assets/Image/laugh.png')}
+                  style={{ height: 20, width: 20 }}
+                />}
+              <Text>Funny</Text>
+            </TouchableOpacity>
+          </View>
+        </View> :
+          <View>
+            <View style={styles.header1}>
+              <Image source={{ uri: `https://office3i.com/development/api/storage/app/${item.created_by.profile_img}`, }} style={styles.profileImage} />
+              <View style={styles.headerText}>
+                <View style={styles.headerRow2}>
+                  <Text style={styles.name}>{item.created_by.first_name}</Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={styles.time}>{item.created_at}</Text>
+                  </View>
+                </View>
+                <Text style={styles.role}>{item.created_by.department_name}</Text>
+              </View>
+            </View>
+            <View style={{ alignSelf: 'center', marginVertical: 10 }}>
+              <View style={styles.progressContainer}>
+              <Text style={styles.role}>{item.title}</Text>
+
+                <Progress.Bar
+                  color="grey"
+                  progress={0}
+                  width={335}
+                  height={50}
+                  borderWidth={1}
+                />
+                <Text style={{
+                  position: 'absolute',
+                  fontSize: 16,
+                  fontWeight: 'bold',
+                  color: '#000',
+                }}>{item.options?.title}</Text>
+                 <Text style={styles.role}>Poll ends on{item.end_date}</Text>
+              </View>
+              {/* <Progress.Bar
+                color="grey"
+                progress={0}
+                width={335}
+                height={50}
+              />
+              <Progress.Bar
+                color="grey"
+                progress={0}
+                width={335}
+                height={50}
+              /> */}
+            </View>
+          </View>
+        }
       </View>
-    </View>
-  );
+    )
+  };
 
   const handleDateChanges = (date, event) => {
     setDatePickerVisibility(date);
@@ -980,8 +1122,11 @@ const HomeScreen = ({navigation}) => {
   const closeModal = () => {
     setModalVisible1(false);
   };
+
+
+
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View>
         {/* {data.userrole == 1 ? null : (   */}
         {/* <>
@@ -1063,18 +1208,18 @@ const HomeScreen = ({navigation}) => {
             />
             <Text style={styles.shifttext}>Shift Timing - 9am to 6pm</Text>
 
-            <View style={styles.buttonview}>
+            <View style={[styles.buttonview, { flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#fff' }]}>
               <TouchableOpacity
-                style={[styles.checkin, {marginVertical: 5}]}
+                style={[styles.checkin, { marginVertical: 5 }]}
                 onPress={() => checkWiFiConnection()}>
-                <Text style={[styles.checkintext, {color: '#00275C'}]}>
+                <Text style={[styles.checkintext, { color: '#00275C' }]}>
                   Check-In
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => performCheckOut()}
-                style={[styles.checkin, {backgroundColor: '#CF0000'}]}>
-                <Text style={[styles.checkintext, {color: '#fff'}]}>
+                style={[styles.checkin, { backgroundColor: '#CF0000' }]}>
+                <Text style={[styles.checkintext, { color: '#fff' }]}>
                   Check-Out
                 </Text>
               </TouchableOpacity>
@@ -1105,7 +1250,7 @@ const HomeScreen = ({navigation}) => {
                   style={[
                     styles.option,
                     selectedOption === 'face_shy' && styles.selectedOption,
-                    {flexDirection: 'row', alignItems: 'center', gap: 5},
+                    { flexDirection: 'row', alignItems: 'center', gap: 5 },
                   ]}
                   onPress={() => handleOptionClick('face_shy')}>
                   <DepressedIcon width={20} height={20} />
@@ -1116,7 +1261,7 @@ const HomeScreen = ({navigation}) => {
                   style={[
                     styles.option,
                     selectedOption === 'happy' && styles.selectedOption,
-                    {flexDirection: 'row', alignItems: 'center', gap: 5},
+                    { flexDirection: 'row', alignItems: 'center', gap: 5 },
                   ]}
                   onPress={() => handleOptionClick('happy')}>
                   <SmileIcon width={20} height={20} />
@@ -1127,8 +1272,8 @@ const HomeScreen = ({navigation}) => {
                   style={[
                     styles.option,
                     selectedOption === 'happy_positive' &&
-                      styles.selectedOption,
-                    {flexDirection: 'row', alignItems: 'center', gap: 5},
+                    styles.selectedOption,
+                    { flexDirection: 'row', alignItems: 'center', gap: 5 },
                   ]}
                   onPress={() => handleOptionClick('happy_positive')}>
                   <LaughIcon width={20} height={20} />
@@ -1139,7 +1284,7 @@ const HomeScreen = ({navigation}) => {
                   style={[
                     styles.option,
                     selectedOption === 'love_happy' && styles.selectedOption,
-                    {flexDirection: 'row', alignItems: 'center', gap: 5},
+                    { flexDirection: 'row', alignItems: 'center', gap: 5 },
                   ]}
                   onPress={() => handleOptionClick('love_happy')}>
                   <HeartFeelIcon width={20} height={20} />
@@ -1150,7 +1295,7 @@ const HomeScreen = ({navigation}) => {
                   style={[
                     styles.option,
                     selectedOption === 'sad_smiley' && styles.selectedOption,
-                    {flexDirection: 'row', alignItems: 'center', gap: 5},
+                    { flexDirection: 'row', alignItems: 'center', gap: 5 },
                   ]}
                   onPress={() => handleOptionClick('sad_smiley')}>
                   <SadIcon width={20} height={20} />
@@ -1210,7 +1355,7 @@ const HomeScreen = ({navigation}) => {
                     style={[
                       styles.emojiButton,
                       selectedEmoji === 'happy_positive' &&
-                        styles.selectedEmoji,
+                      styles.selectedEmoji,
                     ]}>
                     <LaughIcon />
                   </TouchableOpacity>
@@ -1240,9 +1385,9 @@ const HomeScreen = ({navigation}) => {
                   </TouchableOpacity>
                 </View>
                 {mood.status === 'success' ? (
-                  <View style={{marginTop: '5%'}}>
+                  <View style={{ marginTop: '5%' }}>
                     <TouchableOpacity
-                      style={[styles.buttonSubmit, {marginLeft: 10}]}
+                      style={[styles.buttonSubmit, { marginLeft: 10 }]}
                       onPress={Update}>
                       <Text style={styles.EmployeeModeBoardbuttonSubmitText}>
                         Update
@@ -1283,7 +1428,7 @@ const HomeScreen = ({navigation}) => {
             <Text style={styles.headerText1}>Holidays</Text>
             <Image
               source={require('../../../Assets/Image/calendar.png')}
-              style={{height: 20, width: 20, color: '#00275C'}}
+              style={{ height: 20, width: 20, color: '#00275C' }}
             />
           </TouchableOpacity>
           <DateTimePickerModal
@@ -1298,7 +1443,7 @@ const HomeScreen = ({navigation}) => {
             <TouchableOpacity onPress={() => handlePrev()}>
               <Image
                 source={require('../../../Assets/Image/angleleft.png')}
-                style={{height: 20, width: 20}}
+                style={{ height: 20, width: 20 }}
               />
             </TouchableOpacity>
 
@@ -1310,18 +1455,18 @@ const HomeScreen = ({navigation}) => {
             <TouchableOpacity onPress={() => handleNext()}>
               <Image
                 source={require('../../../Assets/Image/angleright.png')}
-                style={{height: 20, width: 20}}
+                style={{ height: 20, width: 20 }}
               />
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.whatsmind}>
           <View style={styles.whatsmindview}>
-            <Text style={{marginLeft: 10}}>What's On Your Mind?</Text>
+            <Text style={{ marginLeft: 10 }}>What's On Your Mind?</Text>
             <TouchableOpacity
               onPress={() => navigation.navigate('PostScreen')}
               style={styles.plusview}>
-              <Text style={{color: '#fff', fontSize: 18}}>+</Text>
+              <Text style={{ color: '#fff', fontSize: 18 }}>+</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.dotview}>
@@ -1340,21 +1485,25 @@ const HomeScreen = ({navigation}) => {
         </View>
 
         <View style={styles.postview}>
-          <TouchableOpacity style={styles.allbutton}>
+          <TouchableOpacity onPress={() => { selectGender("all") }} style={styles.allbutton}>
             <Text style={styles.alltext}>All</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.allbutton, {width: '20%'}]}>
+          <TouchableOpacity onPress={() => { selectGender("post") }} style={[styles.allbutton, { width: '20%' }]}>
             <Text style={styles.alltext}>Posts</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.allbutton, {width: '37%'}]}>
+          <TouchableOpacity onPress={() => { selectGender("announcement") }} style={[styles.allbutton, { width: '37%' }]}>
             <Text style={styles.alltext}>Announcements</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.allbutton, {width: '20%'}]}>
+          <TouchableOpacity onPress={() => { selectGender("poll") }} style={[styles.allbutton, { width: '20%' }]}>
             <Text style={styles.alltext}>Polls</Text>
           </TouchableOpacity>
         </View>
 
-        <FlatList data={posts} renderItem={PostItem} />
+        <FlatList
+          data={bdayList}
+          renderItem={PostItem}
+          keyExtractor={(item, index) => `${item.id}-${index}`}
+        />
         {/* {data.userrole == 1 || data.userrole == 2 ? (
           <View style={styles.CountContainer}>
             <View style={styles.cardContainer}>
@@ -1841,24 +1990,26 @@ const HomeScreen = ({navigation}) => {
           <View style={styles.modalView}>
             <TouchableOpacity
               key="birthday" // Unique key for Birthday option
-              onPress={() => {closeModal(); navigation.navigate('Birthday', {Id: '1'})}}>
+              onPress={() => { closeModal(); navigation.navigate('Birthday', { Id: '1' }) }}>
               <Text style={styles.modalText1}>Birthdays</Text>
             </TouchableOpacity>
             <TouchableOpacity
               key="workAnniversary" // Unique key for Work Anniversaries
-              onPress={() =>  {closeModal();navigation.navigate('Birthday', {Id: '2'})}}>
+              onPress={() => { closeModal(); navigation.navigate('Birthday', { Id: '2' }) }}>
               <Text style={styles.modalText1}>Work Anniversaries</Text>
             </TouchableOpacity>
             <TouchableOpacity
               key="skillDevelopment" // Unique key for Skill Development / Training
-              onPress={() =>  {closeModal();navigation.navigate('SkillDevelopment')}}>
+              onPress={() => { closeModal(); navigation.navigate('SkillDevelopment') }}>
               <Text style={styles.modalText1}>
                 Skill Development / Training
               </Text>
+            </TouchableOpacity >
+            <TouchableOpacity onPress={() => { closeModal(); navigation.navigate('RewardRecongition') }}>
+              <Text key="rewardsRecognition" style={styles.modalText1}>
+                Rewards / Recognition
+              </Text>
             </TouchableOpacity>
-             <Text key="rewardsRecognition" style={styles.modalText1}>
-              Rewards / Recognition
-            </Text>
           </View>
         </View>
       </Modal>
